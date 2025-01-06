@@ -65,48 +65,33 @@ const processForDecryption = (str: string) => {
 
 export function MotionUCipher() {
   const [input, setInput] = useState("")
-  const [encrypted, setEncrypted] = useState("")
-  const [decrypted, setDecrypted] = useState("")
+  const [output, setOutput] = useState("")
   const [error, setError] = useState<string>("")
   const key = "motion-u" // Encryption key
 
-  const handleEncrypt = () => {
+  const handleEncryptDecrypt = () => {
     setError("")
     if (!input.trim()) {
-      setError("Please enter some text to encrypt")
+      setError("Please enter some text")
       return
     }
 
     try {
-      // First encrypt using Vigenère Cipher
-      const vigenereEncrypted = vigenereEncrypt(input, key)
-      // Then encode using Base64
-      const base64Encrypted = btoa(vigenereEncrypted)
-      setEncrypted(base64Encrypted)
-    } catch (error) {
-      setError("Failed to encrypt text")
-      console.error(error)
-    }
-  }
-
-  const handleDecrypt = () => {
-    setError("")
-    if (!encrypted.trim()) {
-      setError("Please encrypt some text first")
-      return
-    }
-
-    try {
-      // Process the encrypted string first
-      const processedText = processForDecryption(encrypted);
-      // First decode from Base64
+      // Try to decrypt first
+      const processedText = processForDecryption(input);
       const base64Decrypted = atob(processedText);
-      // Then decrypt using Vigenère Cipher
       const vigenereDecrypted = vigenereDecrypt(base64Decrypted, key);
-      setDecrypted(vigenereDecrypted);
+      setOutput(vigenereDecrypted);
     } catch (error) {
-      setError("Invalid encrypted text! Please ensure you've copied the entire encrypted string.")
-      console.error(error)
+      // If decryption fails, encrypt the input
+      try {
+        const vigenereEncrypted = vigenereEncrypt(input, key);
+        const base64Encrypted = btoa(vigenereEncrypted);
+        setOutput(base64Encrypted);
+      } catch (error) {
+        setError("Failed to encrypt/decrypt text");
+        console.error(error);
+      }
     }
   }
 
@@ -138,7 +123,7 @@ export function MotionUCipher() {
           <div className="space-y-2">
             <label className="text-sm font-medium">Input Text:</label>
             <Textarea
-              placeholder="Enter text to encrypt"
+              placeholder="Enter text to encrypt or decrypt"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="min-h-[100px]"
@@ -146,24 +131,20 @@ export function MotionUCipher() {
           </div>
 
           <div className="flex flex-wrap gap-4">
-            <Button onClick={handleEncrypt} className="flex items-center gap-2">
+            <Button onClick={handleEncryptDecrypt} className="flex items-center gap-2">
               <Lock className="w-4 h-4" />
-              Encrypt
-            </Button>
-            <Button onClick={handleDecrypt} variant="secondary" className="flex items-center gap-2">
-              <Unlock className="w-4 h-4" />
-              Decrypt
+              Encrypt/Decrypt
             </Button>
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium">Encrypted Text:</label>
-              {encrypted && (
+              <label className="text-sm font-medium">Output Text:</label>
+              {output && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => copyToClipboard(encrypted)}
+                  onClick={() => copyToClipboard(output)}
                   className="h-8"
                 >
                   <Copy className="w-4 h-4" />
@@ -171,28 +152,7 @@ export function MotionUCipher() {
               )}
             </div>
             <Textarea
-              value={encrypted}
-              readOnly
-              className="min-h-[100px] bg-muted"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-medium">Decrypted Text:</label>
-              {decrypted && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => copyToClipboard(decrypted)}
-                  className="h-8"
-                >
-                  <Copy className="w-4 h-4" />
-                </Button>
-              )}
-            </div>
-            <Textarea
-              value={decrypted}
+              value={output}
               readOnly
               className="min-h-[100px] bg-muted"
             />
