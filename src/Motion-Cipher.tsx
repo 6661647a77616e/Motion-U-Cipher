@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Copy, Key, Lock, Unlock } from 'lucide-react'
+import { Copy, Key, Lock } from 'lucide-react'
 
 // Helper function to apply Vigenère Cipher
 const vigenereEncrypt = (text: string, key: string) => {
