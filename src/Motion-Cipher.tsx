@@ -120,84 +120,85 @@ export function MotionUCipher() {
   }
 
   return (
-    <Card className="max-w-3xl mx-auto">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-3xl font-bold">
-          <Key className="w-8 h-8" />
-          Motion-U Cipher
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {error && (
-          <div className="p-4 text-sm text-red-500 bg-red-50 rounded-md">
-            {error}
+    <div className="w-screen h-screen flex items-center justify-center">
+      <Card className="w-full h-full max-w-3xl mx-auto">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-3xl font-bold">
+            <Key className="w-8 h-8" />
+            Motion-U Cipher
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {error && (
+            <div className="p-4 text-sm text-red-500 bg-red-50 rounded-md">
+              {error}
+            </div>
+          )}
+          
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Input Text:</label>
+            <Textarea
+              placeholder="Enter text to encrypt"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="min-h-[100px]"
+            />
           </div>
-        )}
-        
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Input Text:</label>
-          <Textarea
-            placeholder="Enter text to encrypt"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="min-h-[100px]"
-          />
-        </div>
 
-        <div className="flex flex-wrap gap-4">
-          <Button onClick={handleEncrypt} className="flex items-center gap-2">
-            <Lock className="w-4 h-4" />
-            Encrypt
-          </Button>
-          <Button onClick={handleDecrypt} variant="secondary" className="flex items-center gap-2">
-            <Unlock className="w-4 h-4" />
-            Decrypt
-          </Button>
-        </div>
-
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <label className="text-sm font-medium">Encrypted Text:</label>
-            {encrypted && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => copyToClipboard(encrypted)}
-                className="h-8"
-              >
-                <Copy className="w-4 h-4" />
-              </Button>
-            )}
+          <div className="flex flex-wrap gap-4">
+            <Button onClick={handleEncrypt} className="flex items-center gap-2">
+              <Lock className="w-4 h-4" />
+              Encrypt
+            </Button>
+            <Button onClick={handleDecrypt} variant="secondary" className="flex items-center gap-2">
+              <Unlock className="w-4 h-4" />
+              Decrypt
+            </Button>
           </div>
-          <Textarea
-            value={encrypted}
-            readOnly
-            className="min-h-[100px] bg-muted"
-          />
-        </div>
 
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <label className="text-sm font-medium">Decrypted Text:</label>
-            {decrypted && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => copyToClipboard(decrypted)}
-                className="h-8"
-              >
-                <Copy className="w-4 h-4" />
-              </Button>
-            )}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium">Encrypted Text:</label>
+              {encrypted && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => copyToClipboard(encrypted)}
+                  className="h-8"
+                >
+                  <Copy className="w-4 h-4" />
+                </Button>
+              )}
+            </div>
+            <Textarea
+              value={encrypted}
+              readOnly
+              className="min-h-[100px] bg-muted"
+            />
           </div>
-          <Textarea
-            value={decrypted}
-            readOnly
-            className="min-h-[100px] bg-muted"
-          />
-        </div>
-      </CardContent>
-    </Card>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium">Decrypted Text:</label>
+              {decrypted && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => copyToClipboard(decrypted)}
+                  className="h-8"
+                >
+                  <Copy className="w-4 h-4" />
+                </Button>
+              )}
+            </div>
+            <Textarea
+              value={decrypted}
+              readOnly
+              className="min-h-[100px] bg-muted"
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }
-
